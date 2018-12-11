@@ -1,4 +1,4 @@
-#### Дипломный проект курса LearnPython 11: Веб-приложение с делегированием части функционала в Telegramm-бот
+#### Дипломный проект курса LearnPython 11: Веб-приложение с делегированием части функционала в Telegram-бот
 
 [подробное описание проекта](https://docs.google.com/document/d/1tNtsoLXqKW26wzFP6Q-3auhoIBqnZ6NUUd3ymyxyev8/edit)
 
