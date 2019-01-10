@@ -12,8 +12,11 @@ class User(db.Model, UserMixin):
     dateRegistration=(db.String(10))
     userTelegrammChat=db.Column(db.String(128),unique=True)
 
+    def set_password(self, password):
+        self.password=generate_password_hash(password)
+
     def check_password(self, password):
         return check_password_hash(self.password, password)
 
-     def __repr__(self):
+    def __repr__(self):
         return '<User {}>'.format(self.username)
