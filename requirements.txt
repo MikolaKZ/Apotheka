@@ -4,9 +4,14 @@ Flask-Login==0.4.1
 Flask-SQLAlchemy==2.3.2
 Flask-WTF==0.14.2
 future==0.17.1
+get==2018.11.19
 itsdangerous==1.1.0
 Jinja2==2.10
 MarkupSafe==1.1.0
+post==2018.11.20
+public==2018.11.20
+query-string==2018.11.20
+request==2018.11.20
 SQLAlchemy==1.2.15
 Werkzeug==0.14.1
 WTForms==2.2.1
