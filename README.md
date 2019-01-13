@@ -11,5 +11,5 @@
 
 1. ***Запустите виртуальное окружение***
 2. ***Введите команду pip install -r requirements.txt для установки всех необходимых модулей***
-3. ***Выполните команду export FLASK_APP=webapp для Linux или set FLASK_APP=webapp для Windows
+3. ***Выполните команду export FLASK_APP=webapp для Linux или set FLASK_APP=webapp для Windows***
 4. ***Выполните команду flask run, после запуска сервера проект будет доступен по указанному системой адресу.***
