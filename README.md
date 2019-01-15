@@ -44,3 +44,7 @@ flask run
 [@CheMikola](https://t.me/CheMikola)
 Куратор проекта:
 [@SimonOsipov](https://t.me/SimonOsipov)
+
+### Лицензия:
+MIT License
+2018-2019
