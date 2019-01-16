@@ -38,6 +38,12 @@
     {{ form.username() }}
     {{ form.password() }}
     {{ form.submit() }}
+    <div class="form-check">
+      <label class="form-check-label" for="gridCheck" >
+        {{ form.remember_me() }}{{ form.remember_me.label }}
+      </label>
+    </div>
+
     <a href="{{ url_for('regisration') }}" >Регистрация</a>
     {% with messages = get_flashed_messages() %}
             {% if messages %}

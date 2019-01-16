@@ -5,6 +5,7 @@ class LoginForm(FlaskForm):
     username=StringField('Имя пользователя', validators=[validators.DataRequired()],render_kw={"class":"form-control", "placeholder":"Имя пользователя"})
     password=PasswordField('Пароль',validators=[validators.DataRequired()],render_kw={"class":"form-control", "placeholder":"Пароль" })
     submit=SubmitField("Войти",render_kw={"class":"btn btn-lg btn-primary btn-block" })
+    remember_me=BooleanField("Запомни меня",default=True, render_kw={"class":"form-check-input", "type":"checkbox", "id":"gridCheck" })
     
 
 class RegistrationForm(FlaskForm):
