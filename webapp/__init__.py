@@ -30,7 +30,7 @@ def create_app():
            return redirect(url_for('login'))
         return render_template('registration.html',title=title,form=login_form)
         
-    @app.route('/process_login')
+    @app.route('/process_login',methods = ['POST'])
     def process_login():
         return "Сейчас проверим!"
 
