@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{%block content%}
+  <body class="bg-light">
+    <div class="container">
+  <div class="py-5 text-center">
+    <img class="mb-4" src='https://www.sudzibas.lv/files/business/thumbs/351787_b200.jpg'  alt="" width="72" height="72">
+    <h2>Добро пожаловать</h2>
+    <p class="lead">Данная персональная страничка позволит вам просмотреть информацию сохраненную на нашем сайте</p>
+  </div>
+  {% from "user/_formhelpers.html" import render_field %}  
+  <div class="row">
+    
+    {% include 'user/userProfile_base.html' %}
+  
+  
+  </div>
+  <footer class="my-5 pt-5 text-muted text-center text-small">
+    <p class="mb-1">&copy; Дипломный проект Александра и Миколы по python 2018-2019 под руководством Семена Осипова</p>
+    
+  </footer>
+  
+</div>
+
+{%endblock%}
+

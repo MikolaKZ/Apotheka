@@ -21,5 +21,7 @@ class RegistrationForm(FlaskForm):
      # isWoman=
     user_name=StringField('Псевдоним', [validators.Length(min=3, max=25, message="Псевдоним должен быть более 4 символов")],render_kw={"class":"form-control", "placeholder":"Псевдоним"})
     submit=SubmitField("Продолжить",render_kw={"class":"btn btn-primary btn-lg btn-block" })
+    submitUserProfileSave=SubmitField("Сохранить",render_kw={"class":"btn btn-primary btn-lg btn-block" })
+  
     
 

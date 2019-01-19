@@ -1,43 +1,4 @@
-
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-    <meta name="generator" content="Jekyll v3.8.5">
-    <title>{{title}}</title>
-
-    <!-- Bootstrap core CSS -->
-   <link rel="stylesheet" href="https://getbootstrap.com/docs/4.2/dist/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-
-
-    <style>
-      .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-      }
-
-      @media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-          font-size: 3.5rem;
-        }
-      }
-    </style>
-    <!-- Custom styles for this template -->
-  </head>
-  <body class="bg-light">
-    <div class="container">
-  <div class="py-5 text-center">
-    <img class="mb-4" src='https://www.sudzibas.lv/files/business/thumbs/351787_b200.jpg'  alt="" width="72" height="72">
-    <h2>Форма регистрации</h2>
-    <p class="lead">Для дальнейшей работы с веб приложением пожалуйста зарегистрируйтесь. Заполните следующие поля:</p>
-  </div>
-  {% from "_formhelpers.html" import render_field %}  
-  <div class="row">
-    
-    <div class="col-md-2"></div> 
+<div class="col-md-2"></div> 
     <div class="col-md-8 order-md-1">
       <h4 class="mb-3">Ваши данные</h4>
       <form action="{{ url_for('regisration') }}"  method = "POST" class="needs-validation">
@@ -123,17 +84,22 @@
           </div>
         </div>
         <hr class="mb-4">
-		<div class="row">
+        <div class="row">
           <div class="col-md-6 mb-3">
-            <label>Пароль*</label>
+            <label>Cтарый пароль*</label>
             {{ render_field(form.password) }}
           </div>
           <div class="col-md-6 mb-3">
             <label>Подтверждение</label>
             {{ render_field(form.confirm) }}
           </div>
-		 </div>
+     </div>
+     {% if request.path == "/user/regisration" %} 
         {{ form.submit() }}
+      {%else%}
+        {{ form.submitUserProfileSave() }}
+        <a href="{{url_for('login')}}" class="btn btn-primary btn-lg btn-block">Отмена</a>
+      {% endif %}
       </form>
       <hr class="mb-4">
     <div class="mb-1">
@@ -141,13 +107,4 @@
     </div>
     </div>
     
-	</div>
-  </div>
-
-  <footer class="my-5 pt-5 text-muted text-center text-small">
-    <p class="mb-1">&copy; Дипломный проект Александра и Миколы по python 2018-2019 под руководством Семена Осипова</p>
-    
-  </footer>
-  
-</div>
-</html>
+    </div>
