@@ -1,19 +1,32 @@
 from flask import Flask, render_template, flash, redirect, url_for,request
-from webapp.forms import LoginForm, RegistrationForm
-from webapp.model import db,User
-
-
+from flask_login import LoginManager, current_user, login_required, login_user, logout_user 
+from webapp.forms import LoginForm, RegistrationForm,PhotoForm
+from webapp.model import db,User,Profile
+from webapp.otherFunc import str_to_bool 
+from werkzeug.utils import secure_filename
+import os, os.path
 
 def create_app():
     app = Flask(__name__)
     app.config.from_pyfile("config.py")
     db.init_app(app)
+    
+    login_manager =LoginManager()
+    login_manager.init_app(app)
+    login_manager.login_view ="login"
+  
+
+    @login_manager.user_loader
+    def load_user(user_id):
+         return User.query.get(user_id)
+
     @app.route('/')
     def index():
         return redirect(url_for('login'))
-
+   
     @app.route('/user/login')
     def login():
+        
         title="Добро пожаловать в Apotheka"
         login_form=LoginForm()
         return render_template('/user/login.html',title=title,form=login_form)
@@ -23,29 +36,69 @@ def create_app():
         title="Регистрация в Apotheka"
         login_form = RegistrationForm(request.form) 
         if request.method == 'POST' and login_form.validate():
-           #user = User(login_form.username.data, login_form.email.data,
-            #           login_form.password.data)
-           #db_session.add(user)
-           flash('Спасибо за регистрацию')
-           return redirect(url_for('login'))
+            #user = User(username=login_form.user_name.data,email=login_form.email.data,
+            #           userTelegrammChat=request.form.get("telegram"))
+            #user.set_password(login_form.password.data)
+            #db.session.add(user)
+            #db.session.commit()
+            #profile=Profile(user_id=user.id, name=login_form.Name.data,sername=login_form.Sername.data,age=int(login_form.age.data),isWoman=str_to_bool(request.form.get("gender")))
+            #db.session.add(profile)
+            #db.session.commit()
+            flash('Спасибо за регистрацию')
+            return redirect(url_for('login'))
         return render_template('/user/registration.html',title=title,form=login_form)
 
     @app.route('/user/userProfile',methods = ['POST', 'GET'])
+    @login_required
     def userProfile():
         title="Профайл пользователя"
         login_form = RegistrationForm(request.form)
+        photoForm=PhotoForm(request.form)
+       
         if request.method == 'POST' and login_form.validate():
-           #user = User(login_form.username.data, login_form.email.data,
-            #           login_form.password.data)
-           #db_session.add(user)
-           flash('Ваши данные успешно сохранились')
-           return redirect(url_for('login'))
-        return render_template('/user/userProfile.html',title=title,form=login_form)
+            profile = Profile.query.filter_by(user_id=current_user.get_id()).first()
+            user = User.query.filter_by(user_id=current_user.get_id()).first()
+            user(username=login_form.user_name.data,email=login_form.email.data,
+                       userTelegrammChat=request.form.get("telegram"))
+            user.set_password(login_form.password.data)
+            db.session.commit()
+            profile(user_id=user.id, name=login_form.Name.data,sername=login_form.Sername.data,age=int(login_form.age.data),isWoman=str_to_bool(request.form.get("gender")))
+            db.session.commit()
+            flash('Данные успешно перезаписаны')
+            return redirect(url_for('login'))
+        profile = Profile.query.filter_by(user_id=current_user.get_id()).first()
+        user= Profile.query.filter_by(id=current_user.get_id()).first()
+        return render_template('/user/userProfile.html',title=title,form=login_form,photoForm=photoForm,User=user,Profile=profile)
         
     @app.route('/process_login',methods = ['POST'])
     def process_login():
-        return "Сейчас проверим!"
-        
+        form=LoginForm()
+        if form.validate_on_submit():
+            user = User.query.filter_by(username=form.username.data).first()
+            if user and user.check_password(form.password.data):
+                login_user(user, remember=form.remember_me.data)
+                flash("Вы успешно зашли на сайт")
+                return redirect(url_for('userProfile'))
+            flash ("Неправильное имя и пароль") 
+            return redirect(url_for('login'))   
 
-
+    @app.route('/uploads', methods=['GET', 'POST'])
+    def upload():
+        form = PhotoForm()
+        if form.validate_on_submit():
+            f = form.photo.data
+            filename = secure_filename(f.filename)
+            file_obj=filename[-3:]
+            filename='avatar.'+file_obj
+            avatar_path=os.path.join(app.config["BASE_DIR_AVATAR"],current_user.get_id(), filename)
+            try:
+                f.save(avatar_path)
+            except (FileNotFoundError):
+                os.makedirs(os.path.join(app.config["BASE_DIR_AVATAR"],current_user.get_id()))
+                f.save(avatar_path)  
+            profile = Profile.query.filter_by(user_id=current_user.get_id()).first()
+            profile.Avatar =avatar_path
+            db.session.commit()
+        return redirect(url_for('userProfile'))
+         
     return app

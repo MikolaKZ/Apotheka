@@ -8,11 +8,27 @@
     <p class="lead">Данная персональная страничка позволит вам просмотреть информацию сохраненную на нашем сайте</p>
   </div>
   {% from "user/_formhelpers.html" import render_field %}  
+  {% from "user/_formhelpers.html" import rect %} 
   <div class="row">
-    
+    <div class="col-md-3">
+    <form action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data">
+      {{ form.hidden_tag() }}
+      
+      {%if Profile.Avatar =="" %}
+          <center>{{rect()}}</center>
+      {%else%}  
+        <img src="{{Profile.Avatar}}" alt="а это ваш аватар" class="img-thumbnail">
+      {%endif%}
+        
+          {{ render_field(photoForm.photo) }}
+          {{photoForm.submit()}}
+        
+
+      </form>
+    </div>  
+    <div class="col-md-9">
     {% include 'user/userProfile_base.html' %}
-  
-  
+   </div>  
   </div>
   <footer class="my-5 pt-5 text-muted text-center text-small">
     <p class="mb-1">&copy; Дипломный проект Александра и Миколы по python 2018-2019 под руководством Семена Осипова</p>

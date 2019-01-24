@@ -23,7 +23,11 @@
             <div class="input-group-prepend">
               <span class="input-group-text">=></span>
             </div>
+            {% if User.username ==""%}
             {{form.user_name()}}
+            {%else%}
+            {{form.user_name(value="{{User.username}}")}} 
+            {%endif%}
           </div>
         </div>
         <dd>
@@ -41,7 +45,7 @@
             <div class="input-group-prepend">
               <span class="input-group-text">@</span>
             </div>
-            <input type="telegram" class="form-control" id="telegram" placeholder="telegram">
+            <input class="form-control"  id="telegram"  name="telegram" placeholder="telegram"  type="text">
           </div>
         </div>
         <div class="mb-3">
@@ -75,11 +79,11 @@
 
         <div class="d-block my-3">
           <div class="custom-control custom-radio">
-            <input id="man" name="gender" type="radio" class="custom-control-input" checked required>
+            <input id="man" name="gender" type="radio" value="false" class="custom-control-input" checked required>
             <label class="custom-control-label" for="man">Мужской</label>
           </div>
           <div class="custom-control custom-radio">
-            <input id="woman" name="gender" type="radio" class="custom-control-input" required>
+            <input id="woman" name="gender" value="true" type="radio" class="custom-control-input" required>
             <label class="custom-control-label" for="woman">Женский</label>
           </div>
         </div>

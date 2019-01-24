@@ -3,3 +3,5 @@ env/
 *.db
 *.pyc
 vevn/
+photos/
+photo*/
