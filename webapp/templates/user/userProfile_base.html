@@ -6,15 +6,15 @@
         <div class="row">
           <div class="col-md-5 mb-3">
             <label>Имя*</label>
-            {{ render_field(form.Name) }}
+            {{ render_field(form.Name,Profile.name)}}
           </div>
           <div class="col-md-5 mb-3">
             <label>Фамилия*</label>
-            {{ render_field(form.Sername) }}
+            {{ render_field(form.Sername,Profile.sername) }}
           </div>
 		   <div class="col-md-2 mb-3">
             <label>Возвраст</label>
-            {{ render_field(form.age) }}
+            {{ render_field(form.age,Profile.age) }}
           </div>
         </div>
         <div class="mb-3">
@@ -23,10 +23,11 @@
             <div class="input-group-prepend">
               <span class="input-group-text">=></span>
             </div>
+       
             {% if User.username ==""%}
             {{form.user_name()}}
             {%else%}
-            {{form.user_name(value="{{User.username}}")}} 
+            {{form.user_name(value=User.username)}} 
             {%endif%}
           </div>
         </div>
@@ -45,20 +46,20 @@
             <div class="input-group-prepend">
               <span class="input-group-text">@</span>
             </div>
-            <input class="form-control"  id="telegram"  name="telegram" placeholder="telegram"  type="text">
+            <input class="form-control"  id="telegram" value="{{User.userTelegrammChat}}"  name="telegram" placeholder="telegram"  type="text">
           </div>
         </div>
         <div class="mb-3">
           <label for="email">Email*</label>
 
-          {{ render_field(form.email) }}
+          {{ render_field(form.email,User.email) }}
           
         </div>
         <div class="row">
           <div class="col-md-5 mb-3">
             <label>Страна</label>
             <select class="custom-select d-block w-100" id="country">
-              <option value="">Выбрать...</option>
+              <option value="{{Profile.country}}">Выбрать...</option>
               <option>Россия</option>
 			  <option>Казахстан</option>
             </select>
@@ -67,7 +68,7 @@
           <div class="col-md-4 mb-3">
             <label for="state">Город</label>
             <select class="custom-select d-block w-100" id="state">
-              <option value="">Выбрать...</option>
+              <option value="{{Profile.city}}">Выбрать...</option>
               <option>Екатеринбург</option>
 			  <option>Алматы</option>
             </select>
@@ -79,11 +80,11 @@
 
         <div class="d-block my-3">
           <div class="custom-control custom-radio">
-            <input id="man" name="gender" type="radio" value="false" class="custom-control-input" checked required>
+            <input id="man" name="gender" type="radio" value="false" class="custom-control-input" {%if Profile.isWoman==False%}checked{%endif%} required>
             <label class="custom-control-label" for="man">Мужской</label>
           </div>
           <div class="custom-control custom-radio">
-            <input id="woman" name="gender" value="true" type="radio" class="custom-control-input" required>
+            <input id="woman" name="gender" value="true" type="radio" class="custom-control-input" {%if Profile.isWoman%}checked{%endif%} required>
             <label class="custom-control-label" for="woman">Женский</label>
           </div>
         </div>

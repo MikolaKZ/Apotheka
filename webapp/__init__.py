@@ -46,7 +46,7 @@ def create_app():
             #db.session.commit()
             flash('Спасибо за регистрацию')
             return redirect(url_for('login'))
-        return render_template('/user/registration.html',title=title,form=login_form)
+        return render_template('/user/registration.html',title=title,form=login_form,User="",Profile="")
 
     @app.route('/user/userProfile',methods = ['POST', 'GET'])
     @login_required
@@ -67,7 +67,7 @@ def create_app():
             flash('Данные успешно перезаписаны')
             return redirect(url_for('login'))
         profile = Profile.query.filter_by(user_id=current_user.get_id()).first()
-        user= Profile.query.filter_by(id=current_user.get_id()).first()
+        user= User.query.filter_by(id=current_user.get_id()).first()
         return render_template('/user/userProfile.html',title=title,form=login_form,photoForm=photoForm,User=user,Profile=profile)
         
     @app.route('/process_login',methods = ['POST'])
