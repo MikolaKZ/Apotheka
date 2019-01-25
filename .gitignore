@@ -3,6 +3,6 @@ env/
 *.db
 *.pyc
 vevn/
-.vscode/
+.vscode/settings.json
 photos/
 photo*/
