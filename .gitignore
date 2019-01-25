@@ -3,3 +3,4 @@ env/
 *.db
 *.pyc
 vevn/
+.vscode/
