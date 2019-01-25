@@ -21,4 +21,13 @@ class User(db.Model, UserMixin):
     def __repr__(self):
         return '<User {}>'.format(self.username)
 
-#class Profile(db.Mode)
+class Profile(db.Model, UserMixin):
+     id=db.Column(db.Integer, primary_key=True)
+     age=db.Column(db.Integer)
+     name=db.Column(db.String(128), nullable=False)
+     sername=db.Column(db.String(128), nullable=False)
+     isWoman=db.Column(db.Boolean)
+     country=db.Column(db.String(128))
+     city=db.Column(db.String(128))
+     user_id=db.Column(db.Integer, db.ForeignKey(User.id), nullable=False)
+     Avatar=db.Column(db.String)

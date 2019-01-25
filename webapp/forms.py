@@ -1,10 +1,17 @@
 from flask_wtf import FlaskForm
-from wtforms import Form, BooleanField, StringField, PasswordField, validators,SubmitField,DecimalField
+from flask_wtf.file import FileAllowed, FileRequired
+from flask_uploads import UploadSet, IMAGES,configure_uploads
+from wtforms import Form, BooleanField, StringField, PasswordField, validators,SubmitField,DecimalField, FileField
+from werkzeug.utils import secure_filename
+
+
+images = UploadSet('images', IMAGES)
 
 class LoginForm(FlaskForm):
     username=StringField('Имя пользователя', validators=[validators.DataRequired()],render_kw={"class":"form-control", "placeholder":"Имя пользователя"})
     password=PasswordField('Пароль',validators=[validators.DataRequired()],render_kw={"class":"form-control", "placeholder":"Пароль" })
     submit=SubmitField("Войти",render_kw={"class":"btn btn-lg btn-primary btn-block" })
+    remember_me=BooleanField("Запомни меня",default=True, render_kw={"class":"form-check-input", "type":"checkbox", "id":"gridCheck" })
     
 
 class RegistrationForm(FlaskForm):
@@ -20,5 +27,9 @@ class RegistrationForm(FlaskForm):
      # isWoman=
     user_name=StringField('Псевдоним', [validators.Length(min=3, max=25, message="Псевдоним должен быть более 4 символов")],render_kw={"class":"form-control", "placeholder":"Псевдоним"})
     submit=SubmitField("Продолжить",render_kw={"class":"btn btn-primary btn-lg btn-block" })
+    submitUserProfileSave=SubmitField("Сохранить",render_kw={"class":"btn btn-primary btn-lg btn-block" })
+  
     
-
+class PhotoForm(FlaskForm):
+    photo = FileField(label="Выберите фото",validators=[FileRequired()])
+    submit=SubmitField("Загрузить",render_kw={"class":"btn btn-primary btn-lg btn-block" })
