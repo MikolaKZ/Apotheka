@@ -10,6 +10,7 @@ images = UploadSet('images', IMAGES)
 class LoginForm(FlaskForm):
     username=StringField('Имя пользователя', validators=[validators.DataRequired()],render_kw={"class":"form-control", "placeholder":"Имя пользователя"})
     password=PasswordField('Пароль',validators=[validators.DataRequired()],render_kw={"class":"form-control", "placeholder":"Пароль" })
+    
     submit=SubmitField("Войти",render_kw={"class":"btn btn-lg btn-primary btn-block" })
     remember_me=BooleanField("Запомни меня",default=True, render_kw={"class":"form-check-input", "type":"checkbox", "id":"gridCheck" })
     
@@ -21,6 +22,9 @@ class RegistrationForm(FlaskForm):
         validators.DataRequired(message='Введите пароль'),validators.Length(min=8, max=25, message='Пароль должен состоять как минимум из 8 символов'),
         validators.EqualTo('confirm', message='Пароли должны совпадать')
     ],render_kw={"class":"form-control"})
+    oldPassword=PasswordField('Старый пароль',validators=[
+        validators.DataRequired(message='Старый пароль'),validators.Length(min=8, max=25, message='Пароль должен состоять как минимум из 8 символов')
+        ],render_kw={"class":"form-control", "placeholder":"Старый пароль" })
     confirm = PasswordField('Повторите пароль',render_kw={"class":"form-control"})
     Name=StringField('Имя', [validators.DataRequired(message="Введите Имя")],render_kw={"class":"form-control", "placeholder":"Иван"})
     Sername=StringField('Фамилия', [validators.DataRequired(message="Введите Фамилию")],render_kw={"class":"form-control", "placeholder":"Федоров"})

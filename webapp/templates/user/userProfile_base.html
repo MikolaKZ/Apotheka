@@ -1,3 +1,4 @@
+{% from "user/_formhelpers.html" import password %} 
 <div class="col-md-2"></div> 
     <div class="col-md-8 order-md-1">
       <h4 class="mb-3">Ваши данные</h4>
@@ -89,22 +90,14 @@
           </div>
         </div>
         <hr class="mb-4">
-        <div class="row">
-          <div class="col-md-6 mb-3">
-            <label>Cтарый пароль*</label>
-            {{ render_field(form.password) }}
-          </div>
-          <div class="col-md-6 mb-3">
-            <label>Подтверждение</label>
-            {{ render_field(form.confirm) }}
-          </div>
-     </div>
-     {% if request.path == "/user/regisration" %} 
-        {{ form.submit() }}
-      {%else%}
-        {{ form.submitUserProfileSave() }}
-        <a href="{{url_for('login')}}" class="btn btn-primary btn-lg btn-block">Отмена</a>
-      {% endif %}
+        {% if request.path == "/user/regisration" %} 
+            {{ password(form,"new") }}
+        {%else%}
+            {{ password(form,"old") }}
+          
+        {% endif %}
+        
+     
       </form>
       <hr class="mb-4">
     <div class="mb-1">
