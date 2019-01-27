@@ -1,6 +1,6 @@
 from flask import Flask, render_template, flash, redirect, url_for,request, send_from_directory
 from flask_login import LoginManager, current_user, login_required, login_user, logout_user 
-from webapp.forms import LoginForm, RegistrationForm,PhotoForm
+from webapp.forms import LoginForm, RegistrationForm,PhotoForm,RegistrationFormWithoutPassword
 from webapp.model import db,User,Profile
 from webapp.otherFunc import str_to_bool 
 from werkzeug.utils import secure_filename
@@ -35,7 +35,7 @@ def create_app():
     @app.route('/user/regisration',methods = ['POST', 'GET'])
     def regisration():
         title="Регистрация в Apotheka"
-        login_form = RegistrationForm(request.form) 
+        login_form = RegistrationForm(request.form)
         if request.method == 'POST' and login_form.validate():
             #user = User(username=login_form.user_name.data,email=login_form.email.data,
             #           userTelegrammChat=request.form.get("telegram"))
@@ -53,20 +53,26 @@ def create_app():
     @login_required
     def userProfile():
         title="Профайл пользователя"
-        login_form = RegistrationForm(request.form)
+        login_form = RegistrationFormWithoutPassword(request.form)
         photoForm=PhotoForm(request.form)
-       
+        
         if request.method == 'POST' and login_form.validate():
             profile = Profile.query.filter_by(user_id=current_user.get_id()).first()
-            user = User.query.filter_by(user_id=current_user.get_id()).first()
-            user(username=login_form.user_name.data,email=login_form.email.data,
-                       userTelegrammChat=request.form.get("telegram"))
-            user.set_password(login_form.password.data)
+            user = User.query.filter_by(id=current_user.get_id()).first()
+            user.username=login_form.user_name.data
+            user.email=login_form.email.data
+            user.userTelegrammChat=request.form.get("telegram")
             db.session.commit()
-            profile(user_id=user.id, name=login_form.Name.data,sername=login_form.Sername.data,age=int(login_form.age.data),isWoman=str_to_bool(request.form.get("gender")))
+            profile.name=login_form.Name.data
+            profile.country=request.form.get("country")
+            profile.city=request.form.get("city")
+            profile.sername=login_form.Sername.data
+            profile.age=int(login_form.age.data)
+            profile.isWoman=str_to_bool(request.form.get("gender"))
             db.session.commit()
             flash('Данные успешно перезаписаны')
             return redirect(url_for('login'))
+    
         profile = Profile.query.filter_by(user_id=current_user.get_id()).first()
         user= User.query.filter_by(id=current_user.get_id()).first()
         return render_template('/user/userProfile.html',title=title,form=login_form,photoForm=photoForm,User=user,Profile=profile)

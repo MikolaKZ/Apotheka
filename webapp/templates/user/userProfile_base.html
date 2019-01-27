@@ -2,7 +2,11 @@
 <div class="col-md-2"></div> 
     <div class="col-md-8 order-md-1">
       <h4 class="mb-3">Ваши данные</h4>
-      <form action="{{ url_for('regisration') }}"  method = "POST" class="needs-validation">
+      {% if request.path == "/user/regisration" %} 
+        <form action="{{ url_for('regisration') }}"  method = "POST" class="needs-validation">
+      {%else%}
+        <form action="{{ url_for('userProfile') }}"  method = "POST" class="needs-validation">  
+      {% endif %} 
           {{ form.hidden_tag() }}
         <div class="row">
           <div class="col-md-5 mb-3">
@@ -67,8 +71,8 @@
             
           </div>
           <div class="col-md-4 mb-3">
-            <label for="state">Город</label>
-            <select class="custom-select d-block w-100" id="state">
+            <label for="city">Город</label>
+            <select class="custom-select d-block w-100" id="city">
               <option value="{{Profile.city}}">Выбрать...</option>
               <option>Екатеринбург</option>
 			  <option>Алматы</option>

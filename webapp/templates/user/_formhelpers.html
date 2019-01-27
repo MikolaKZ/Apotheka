@@ -33,20 +33,7 @@
     </div>
     {{ form.submit() }}
   {%else%}
-    <div class="row">
-      <div class="col-md-4 mb-3">
-        <label>Старый пароль*</label>
-        {{ render_field(form.oldPassword) }}
-      </div>
-      <div class="col-md-4 mb-3">
-        <label>Новый пароль*</label>
-        {{ render_field(form.password) }}
-      </div>
-      <div class="col-md-4 mb-3">
-        <label>Подтверждение</label>
-        {{ render_field(form.confirm) }}
-      </div>
-    </div>
+   
     {{ form.submitUserProfileSave() }}
     <a href="{{url_for('login')}}" class="btn btn-primary btn-lg btn-block">Отмена</a>
   {% endif %}

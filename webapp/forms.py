@@ -22,17 +22,21 @@ class RegistrationForm(FlaskForm):
         validators.DataRequired(message='Введите пароль'),validators.Length(min=8, max=25, message='Пароль должен состоять как минимум из 8 символов'),
         validators.EqualTo('confirm', message='Пароли должны совпадать')
     ],render_kw={"class":"form-control"})
-    oldPassword=PasswordField('Старый пароль',validators=[
-        validators.DataRequired(message='Старый пароль'),validators.Length(min=8, max=25, message='Пароль должен состоять как минимум из 8 символов')
-        ],render_kw={"class":"form-control", "placeholder":"Старый пароль" })
     confirm = PasswordField('Повторите пароль',render_kw={"class":"form-control"})
     Name=StringField('Имя', [validators.DataRequired(message="Введите Имя")],render_kw={"class":"form-control", "placeholder":"Иван"})
     Sername=StringField('Фамилия', [validators.DataRequired(message="Введите Фамилию")],render_kw={"class":"form-control", "placeholder":"Федоров"})
-     # isWoman=
     user_name=StringField('Псевдоним', [validators.Length(min=3, max=25, message="Псевдоним должен быть более 4 символов")],render_kw={"class":"form-control", "placeholder":"Псевдоним"})
     submit=SubmitField("Продолжить",render_kw={"class":"btn btn-primary btn-lg btn-block" })
     submitUserProfileSave=SubmitField("Сохранить",render_kw={"class":"btn btn-primary btn-lg btn-block" })
   
+class RegistrationFormWithoutPassword(FlaskForm):
+    age = DecimalField('Возвраст', [ validators.NumberRange(3, 200, message="Укажите свой возвраст от 3 до 200 лет")],render_kw={"class":"form-control", "placeholder":"18"})
+    email = StringField('Email', [ validators.DataRequired(),validators.Email(message="Email введен неверно")],render_kw={"class":"form-control" ,"placeholder":"твой@емэйл.где"})
+    Name=StringField('Имя', [validators.DataRequired(message="Введите Имя")],render_kw={"class":"form-control", "placeholder":"Иван"})
+    Sername=StringField('Фамилия', [validators.DataRequired(message="Введите Фамилию")],render_kw={"class":"form-control", "placeholder":"Федоров"})
+    user_name=StringField('Псевдоним', [validators.Length(min=3, max=25, message="Псевдоним должен быть более 4 символов")],render_kw={"class":"form-control", "placeholder":"Псевдоним"})
+    submit=SubmitField("Продолжить",render_kw={"class":"btn btn-primary btn-lg btn-block" })
+    submitUserProfileSave=SubmitField("Сохранить",render_kw={"class":"btn btn-primary btn-lg btn-block" })
     
 class PhotoForm(FlaskForm):
     photo = FileField(label="Выберите фото",validators=[FileRequired()])
