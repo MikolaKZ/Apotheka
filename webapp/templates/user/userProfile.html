@@ -18,7 +18,7 @@
       {%if Profile.Avatar =="" %}
           <center>{{rect()}}</center>
       {%else%}  
-        <img src="{{Profile.Avatar}}" alt="а это ваш аватар" class="img-thumbnail">
+        <img src="{{url_for('uploaded_image',filename='avatar.JPG')}}" alt="а это ваш аватар" class="img-thumbnail">
       {%endif%}
         
           {{ render_field(photoForm.photo) }}

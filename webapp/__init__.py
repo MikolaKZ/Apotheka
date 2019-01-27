@@ -1,9 +1,10 @@
-from flask import Flask, render_template, flash, redirect, url_for,request
+from flask import Flask, render_template, flash, redirect, url_for,request, send_from_directory
 from flask_login import LoginManager, current_user, login_required, login_user, logout_user 
 from webapp.forms import LoginForm, RegistrationForm,PhotoForm
 from webapp.model import db,User,Profile
 from webapp.otherFunc import str_to_bool 
 from werkzeug.utils import secure_filename
+from werkzeug import SharedDataMiddleware
 import os, os.path
 
 def create_app():
@@ -14,7 +15,7 @@ def create_app():
     login_manager =LoginManager()
     login_manager.init_app(app)
     login_manager.login_view ="login"
-  
+    
 
     @login_manager.user_loader
     def load_user(user_id):
@@ -90,15 +91,20 @@ def create_app():
             filename = secure_filename(f.filename)
             file_obj=filename[-3:]
             filename='avatar.'+file_obj
-            avatar_path=os.path.join(app.config["BASE_DIR_AVATAR"],current_user.get_id(), filename)
+            avatar_path=os.path.join(app.config["UPLOAD_FOLDER"],current_user.get_id(), filename)
             try:
                 f.save(avatar_path)
             except (FileNotFoundError):
-                os.makedirs(os.path.join(app.config["BASE_DIR_AVATAR"],current_user.get_id()))
+                os.makedirs(os.path.join(app.config["UPLOAD_FOLDER"],current_user.get_id()))
                 f.save(avatar_path)  
             profile = Profile.query.filter_by(user_id=current_user.get_id()).first()
             profile.Avatar =avatar_path
             db.session.commit()
         return redirect(url_for('userProfile'))
+
+    @app.route('/uploads/<filename>')
+    def uploaded_image(filename):
+        return send_from_directory(os.path.join(app.config['UPLOAD_FOLDER'],current_user.get_id()),
+                                filename)
          
     return app
