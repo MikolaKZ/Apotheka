@@ -30,14 +30,18 @@ source env/bin/activate
 ```sh
 pip install -r requirements.txt
 ```
+3. ***Создайте базу данных***
+```sh
+create_db.py
+```
 
-3. ***Запуск сервера Flask***
+4. ***Запуск сервера Flask***
 for Windows/Linux 
 ```sh
 set or export FLASK_APP=webapp 
 flask run
 ```
-4. ***Введите адрес в браузере http://127.0.0.1:5000***
+5. ***Введите адрес в браузере http://127.0.0.1:5000***
 
 ### Разработчики:
 [@Alexandr_Babushkin](https://t.me/Alexandr_Babushkin)
