@@ -26,9 +26,13 @@
     </style>
     {% if request.path == "/user/login" %} 
      <link href="/static/css/signin.css" rel="stylesheet">
-     {% endif %}
+    {% endif %}
+   
     <!-- Custom styles for this template -->
   </head>
+  {% if request.path[0:8] == "/content" %} 
+  {%include 'components/navBar.html'%}
+{% endif %}
     {%block content%}{%endblock%}
 
   </html>

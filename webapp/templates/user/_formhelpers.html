@@ -41,3 +41,23 @@
 
   
 {% endmacro %}
+
+
+{% macro flashMessage(currentMessages) %}
+  {% with messages = currentMessages %}
+    {% if messages %}
+    <div class="alert alert-warning" role="alert">
+        {% for message in messages %}
+            {{ message }}<br>
+        {% endfor %}
+    </div>
+    {% endif %}
+  {% endwith %}
+{% endmacro %}
+
+{% macro footer()%}
+  <footer class="my-5 pt-5 text-muted text-center text-small">
+      <p class="mb-1">&copy; Дипломный проект Александра и Миколы по python 2018-2019 под руководством Семена Осипова</p>
+      
+      </footer>
+{% endmacro %}

@@ -6,6 +6,7 @@ from webapp.otherFunc import str_to_bool
 from werkzeug.utils import secure_filename
 from werkzeug import SharedDataMiddleware
 import os, os.path
+from sqlalchemy.exc import IntegrityError
 
 def create_app():
     app = Flask(__name__)
@@ -23,11 +24,19 @@ def create_app():
 
     @app.route('/')
     def index():
+        if current_user.is_authenticated:
+            return redirect(url_for('main')) 
         return redirect(url_for('login'))
+
+    @app.route('/content/main')
+    def main():
+         title="Apotheka"
+         return render_template('/content/main.html',title=title) 
    
     @app.route('/user/login')
     def login():
-        
+        if current_user.is_authenticated:
+            return redirect(url_for('main')) 
         title="Добро пожаловать в Apotheka"
         login_form=LoginForm()
         return render_template('/user/login.html',title=title,form=login_form)
@@ -37,16 +46,20 @@ def create_app():
         title="Регистрация в Apotheka"
         login_form = RegistrationForm(request.form)
         if request.method == 'POST' and login_form.validate():
-            #user = User(username=login_form.user_name.data,email=login_form.email.data,
-            #           userTelegrammChat=request.form.get("telegram"))
-            #user.set_password(login_form.password.data)
-            #db.session.add(user)
-            #db.session.commit()
-            #profile=Profile(user_id=user.id, name=login_form.Name.data,sername=login_form.Sername.data,age=int(login_form.age.data),isWoman=str_to_bool(request.form.get("gender")))
-            #db.session.add(profile)
-            #db.session.commit()
-            flash('Спасибо за регистрацию')
-            return redirect(url_for('login'))
+            user = User(username=login_form.user_name.data,email=login_form.email.data,
+                       userTelegrammChat=request.form.get("telegram"))
+            try:    
+                user.set_password(login_form.password.data)
+                db.session.add(user)
+                db.session.commit()
+                profile=Profile(user_id=user.id, name=login_form.Name.data,sername=login_form.Sername.data,age=int(login_form.age.data),isWoman=str_to_bool(request.form.get("gender")))
+                db.session.add(profile)
+                db.session.commit()
+                flash('Спасибо за регистрацию')
+                return redirect(url_for('login'))
+            except IntegrityError:
+                flash('Пользователи с такими данными уже существуют')
+                return redirect(url_for('regisration'))
         return render_template('/user/registration.html',title=title,form=login_form,User="",Profile="")
 
     @app.route('/user/userProfile',methods = ['POST', 'GET'])
