@@ -1,3 +1,6 @@
+# TODO поставить пробелы после запятых 
+# TODO строки слишком длинные, должны быть не более 79 символов
+
 from flask import Flask, render_template, flash, redirect, url_for,request, send_from_directory
 from flask_login import LoginManager, current_user, login_required, login_user, logout_user 
 from webapp.forms import LoginForm, RegistrationForm,PhotoForm,RegistrationFormWithoutPassword
@@ -12,7 +15,7 @@ def create_app():
     app = Flask(__name__)
     app.config.from_pyfile("config.py")
     db.init_app(app)
-    
+    # TODO странный отступ, после и перед знаками равно должен быть пробел
     login_manager =LoginManager()
     login_manager.init_app(app)
     login_manager.login_view ="login"
@@ -20,6 +23,7 @@ def create_app():
 
     @login_manager.user_loader
     def load_user(user_id):
+        # TODO странный отступ
          return User.query.get(user_id)
 
     @app.route('/')
@@ -46,6 +50,7 @@ def create_app():
         title="Регистрация в Apotheka"
         login_form = RegistrationForm(request.form)
         if request.method == 'POST' and login_form.validate():
+            # TODO очень нечитаемый список параметров
             user = User(username=login_form.user_name.data,email=login_form.email.data,
                        userTelegrammChat=request.form.get("telegram"))
             try:    
