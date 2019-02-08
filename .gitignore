@@ -8,3 +8,5 @@ photos/
 photo*/
 venv/
 config.py/
+settings.py
+*.log

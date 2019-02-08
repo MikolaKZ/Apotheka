@@ -47,13 +47,23 @@
        {% endif %} 
        </dd>
        <div class="mb-3">
-          <label>Имя пользователя в телеграм</label>
+         {%if TelegramChat.id%}
+          <label>Чат в телеграм</label>
           <div class="input-group">
             <div class="input-group-prepend">
-              <span class="input-group-text">@</span>
+              <span class="input-group-text">@</span> <span class="input-group-text">{{TelegramChat.id}}</span>
             </div>
-            <input class="form-control"  id="telegram" value="{{User.userTelegrammChat}}"  name="telegram" placeholder="telegram"  type="text">
           </div>
+          {%else%}
+          <label>Чат в телеграм</label>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text">Введите пароль, полученный у бота</span>
+              <input class="form-control"  id="telegram" name="telegram" placeholder="telegram"  type="text">
+            </div>
+          </div> 
+          
+          {%endif%}
         </div>
         <div class="mb-3">
           <label for="email">Email*</label>

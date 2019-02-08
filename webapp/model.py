@@ -10,7 +10,6 @@ class User(db.Model, UserMixin):
     password=db.Column(db.String(128))
     email=db.Column(db.String(128),unique=True)
     dateRegistration=(db.String(10))
-    userTelegrammChat=db.Column(db.String(128),unique=True)
 
     def set_password(self, password):
         self.password=generate_password_hash(password)
@@ -31,3 +30,9 @@ class Profile(db.Model, UserMixin):
      city=db.Column(db.String(128))
      user_id=db.Column(db.Integer, db.ForeignKey(User.id), nullable=False)
      Avatar=db.Column(db.String)
+
+class TelegramChat(db.Model, UserMixin):
+    id=db.Column(db.Integer, primary_key=True)
+    psw=db.Column(db.String(8))
+    user_id=db.Column(db.Integer, db.ForeignKey(User.id))
+    alarm=db.Column(db.Boolean)

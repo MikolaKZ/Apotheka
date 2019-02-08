@@ -1,17 +1,19 @@
 from flask import Flask, render_template, flash, redirect, url_for,request, send_from_directory
 from flask_login import LoginManager, current_user, login_required, login_user, logout_user 
 from webapp.forms import LoginForm, RegistrationForm,PhotoForm,RegistrationFormWithoutPassword
-from webapp.model import db,User,Profile
+from webapp.model import db,User,Profile,TelegramChat
 from webapp.otherFunc import str_to_bool 
 from werkzeug.utils import secure_filename
 from werkzeug import SharedDataMiddleware
 import os, os.path
 from sqlalchemy.exc import IntegrityError
+from flask_migrate import Migrate
 
 def create_app():
     app = Flask(__name__)
     app.config.from_pyfile("config.py")
     db.init_app(app)
+    migrate=Migrate(app, db)
     
     login_manager =LoginManager()
     login_manager.init_app(app)
@@ -46,8 +48,9 @@ def create_app():
         title="Регистрация в Apotheka"
         login_form = RegistrationForm(request.form)
         if request.method == 'POST' and login_form.validate():
-            user = User(username=login_form.user_name.data,email=login_form.email.data,
-                       userTelegrammChat=request.form.get("telegram"))
+            
+           
+            user = User(username=login_form.user_name.data,email=login_form.email.data)
             try:    
                 user.set_password(login_form.password.data)
                 db.session.add(user)
@@ -55,12 +58,27 @@ def create_app():
                 profile=Profile(user_id=user.id, name=login_form.Name.data,sername=login_form.Sername.data,age=int(login_form.age.data),isWoman=str_to_bool(request.form.get("gender")))
                 db.session.add(profile)
                 db.session.commit()
+                
+
+                if request.form.get("telegram")!="":
+                    if telegramChat==TelegramChat.query.filter_by(psw=request.form.get("telegram")).first():
+                        telegramChat.user_id=current_user.get_id()
+                        db.session.add(telegramChat)
+                        db.session.commit()
+                    else:
+                        flash('Не удалось установить связь с ботом, поробуйте еще!')
                 flash('Спасибо за регистрацию')
                 return redirect(url_for('login'))
             except IntegrityError:
                 flash('Пользователи с такими данными уже существуют')
                 return redirect(url_for('regisration'))
-        return render_template('/user/registration.html',title=title,form=login_form,User="",Profile="")
+        return render_template('/user/registration.html',title=title,form=login_form,User="",Profile="",TelegramChat="")
+
+    @app.route('/logout')
+    def logout():
+        logout_user()
+        flash('')
+        return redirect(url_for('login'))
 
     @app.route('/user/userProfile',methods = ['POST', 'GET'])
     @login_required
@@ -72,6 +90,7 @@ def create_app():
         if request.method == 'POST' and login_form.validate():
             profile = Profile.query.filter_by(user_id=current_user.get_id()).first()
             user = User.query.filter_by(id=current_user.get_id()).first()
+            telegramChat=TelegramChat.query.filter_by(user_id=current_user.get_id()).first()
             user.username=login_form.user_name.data
             user.email=login_form.email.data
             user.userTelegrammChat=request.form.get("telegram")
@@ -83,12 +102,21 @@ def create_app():
             profile.age=int(login_form.age.data)
             profile.isWoman=str_to_bool(request.form.get("gender"))
             db.session.commit()
+            if request.form.get("telegram")=="":
+                if telegramChat==TelegramChat.query.filter_by(psw=request.form.get("telegram")).first():
+                    telegramChat.user_id=current_user.get_id()
+                    db.session.add(telegramChat)
+                    db.session.commit()
+                else:
+                    flash('Не удалось установить связь с ботом, поробуйте еще!')
+
             flash('Данные успешно перезаписаны')
             return redirect(url_for('login'))
     
         profile = Profile.query.filter_by(user_id=current_user.get_id()).first()
         user= User.query.filter_by(id=current_user.get_id()).first()
-        return render_template('/user/userProfile.html',title=title,form=login_form,photoForm=photoForm,User=user,Profile=profile)
+        telegramChat=TelegramChat.query.filter_by(user_id=current_user.get_id()).first()
+        return render_template('/user/userProfile.html',title=title,form=login_form,photoForm=photoForm,User=user,Profile=profile,TelegramChat=telegramChat)
         
     @app.route('/process_login',methods = ['POST'])
     def process_login():
