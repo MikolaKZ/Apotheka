@@ -30,10 +30,12 @@ def inline_button_pressed(bot, update):
     bot.sendMessage(chat_id=chat_id,text="Ваш пароль подтверждение:\n {}" .format(psw))
     if setDBUserPassword(psw,chat_id) ==False:
           bot.sendMessage(chat_id=chat_id,text="Что то пошло не так, попробуйте позже")
+
     
 def getRandomValue(lengthNumber):
     psw=(''.join([random.choice(list('123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM')) for x in range(lengthNumber)]))
     return psw
-    
+
+
 if __name__ == "__main__":
     main()

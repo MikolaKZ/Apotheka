@@ -9,6 +9,8 @@ import os, os.path
 from sqlalchemy.exc import IntegrityError
 from flask_migrate import Migrate
 
+
+
 def create_app():
     app = Flask(__name__)
     app.config.from_pyfile("config.py")
@@ -61,10 +63,13 @@ def create_app():
                 
 
                 if request.form.get("telegram")!="":
-                    if telegramChat==TelegramChat.query.filter_by(psw=request.form.get("telegram")).first():
-                        telegramChat.user_id=current_user.get_id()
+                    pswTelegramChat=request.form.get("telegram")
+                    telegramChat= TelegramChat.query.filter_by(psw=request.form.get("telegram")).first()
+                    if telegramChat:
+                        telegramChat.user_id=user.id
+                        telegramChat.psw=None
                         db.session.add(telegramChat)
-                        db.session.commit()
+                        db.session.commit()     
                     else:
                         flash('Не удалось установить связь с ботом, поробуйте еще!')
                 flash('Спасибо за регистрацию')
@@ -77,7 +82,7 @@ def create_app():
     @app.route('/logout')
     def logout():
         logout_user()
-        flash('')
+        flash('Вы успешно разлогинились')
         return redirect(url_for('login'))
 
     @app.route('/user/userProfile',methods = ['POST', 'GET'])
