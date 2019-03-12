@@ -10,6 +10,7 @@ from werkzeug.utils import secure_filename
 from werkzeug import SharedDataMiddleware
 import os, os.path
 from sqlalchemy.exc import IntegrityError
+from flask_migrate import Migrate
 
 def create_app():
     app = Flask(__name__)
@@ -19,6 +20,7 @@ def create_app():
     login_manager =LoginManager()
     login_manager.init_app(app)
     login_manager.login_view ="login"
+    migrate = Migrate(app, db)
     
 
     @login_manager.user_loader

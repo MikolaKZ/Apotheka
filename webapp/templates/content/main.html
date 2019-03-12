@@ -1,6 +1,28 @@
 {% extends "base.html" %}
 {%block content%}
 {% from "user/_formhelpers.html" import footer %} 
+
+
+<head>
+  <script src="https://api-maps.yandex.ru/2.1/?apikey=<YA_MAP_KEY>&lang=ru_RU"
+  type="text/javascript">
+  </script>
+</head>
+
+<script src="https://api-maps.yandex.ru/2.1?apikey=<YA_MAP_KEY>&load=package.full&lang=ru_RU">
+</script>
+<script type="text/javascript">
+  ymaps.ready(function () {
+    var myMap = new ymaps.Map("YMapsID", {
+      center: [55.76, 37.64],
+      zoom: 10
+    });
+  });
+</script>
+
+<div id="YMapsID" style="width: 900px; height: 350px;"></div>
+
+
 <body class="text-center">
       
     
