@@ -1,8 +1,8 @@
 def str_to_bool(s):
-    s=s.lower()
+    s = s.lower()
     if s == 'true':
-         return True
+        return True
     elif s == 'false':
-         return False
+        return False
     else:
-         raise ValueError
+        raise ValueError
