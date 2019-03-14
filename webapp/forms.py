@@ -1,7 +1,8 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileAllowed, FileRequired
 from flask_uploads import UploadSet, IMAGES, configure_uploads
-from wtforms import Form, BooleanField, StringField, PasswordField, validators, SubmitField, DecimalField, FileField
+from wtforms import (Form, BooleanField, StringField, PasswordField,
+                     validators, SubmitField, DecimalField, FileField)
 from werkzeug.utils import secure_filename
 
 
