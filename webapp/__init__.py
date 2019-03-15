@@ -6,12 +6,9 @@ from webapp.otherFunc import str_to_bool
 from werkzeug.utils import secure_filename
 from werkzeug import SharedDataMiddleware
 from sqlalchemy.exc import IntegrityError
-from webapp.forms import (LoginForm, RegistrationForm, PhotoForm,
-                          RegistrationFormWithoutPassword)
-from flask_login import (LoginManager, current_user, login_required,
-                         login_user, logout_user)
-from flask import (Flask, render_template, flash, redirect, url_for, request,
-                   send_from_directory)
+from webapp.forms import LoginForm, RegistrationForm, PhotoForm, RegistrationFormWithoutPassword
+from flask_login import LoginManager, current_user, login_required, login_user, logout_user
+from flask import Flask, render_template, flash, redirect, url_for, request, send_from_directory
 
 
 def create_app():
