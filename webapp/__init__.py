@@ -6,9 +6,12 @@ from webapp.otherFunc import str_to_bool
 from werkzeug.utils import secure_filename
 from werkzeug import SharedDataMiddleware
 from sqlalchemy.exc import IntegrityError
-from webapp.forms import LoginForm, RegistrationForm, PhotoForm, RegistrationFormWithoutPassword
-from flask_login import LoginManager, current_user, login_required, login_user, logout_user
-from flask import Flask, render_template, flash, redirect, url_for, request, send_from_directory
+from webapp.forms import (LoginForm, RegistrationForm, PhotoForm,
+                          RegistrationFormWithoutPassword)
+from flask_login import (LoginManager, current_user, login_required,
+                         login_user, logout_user)
+from flask import (Flask, render_template, flash, redirect, url_for, request,
+                   send_from_directory)
 
 
 def create_app():
@@ -41,8 +44,7 @@ def create_app():
             return redirect(url_for('main'))
         title = "Добро пожаловать в Apotheka"
         login_form = LoginForm()
-        return render_template('/user/login.html', title=title,
-                               form=login_form)
+        return render_template('/user/login.html', title=title, form=login_form)
 
     @app.route('/user/regisration', methods=['POST', 'GET'])
     def regisration():
@@ -82,8 +84,7 @@ def create_app():
         photoForm = PhotoForm(request.form)
 
         if request.method == 'POST' and login_form.validate():
-            profile = Profile.query.filter_by(user_id=(
-                                              current_user.get_id()).first())
+            profile = Profile.query.filter_by(user_id=current_user.get_id()).first()
             user = User.query.filter_by(id=current_user.get_id()).first()
             user.username = login_form.user_name.data
             user.email = login_form.email.data
@@ -99,8 +100,7 @@ def create_app():
             flash('Данные успешно перезаписаны')
             return redirect(url_for('login'))
 
-        profile = Profile.query.filter_by(user_id=(
-                                            current_user.get_id()).first())
+        profile = Profile.query.filter_by(user_id=current_user.get_id()).first()
         user = User.query.filter_by(id=current_user.get_id()).first()
         return render_template('/user/userProfile.html', title=title,
                                form=login_form, photoForm=photoForm, User=user,
@@ -134,8 +134,7 @@ def create_app():
                 os.makedirs(os.path.join(app.config["UPLOAD_FOLDER"],
                                          current_user.get_id()))
                 f.save(avatar_path)
-            profile = Profile.query.filter_by(user_id=(
-                                                current_user.get_id()).first())
+            profile = Profile.query.filter_by(user_id=current_user.get_id()).first()
             profile.Avatar = avatar_path
             db.session.commit()
         return redirect(url_for('userProfile'))
